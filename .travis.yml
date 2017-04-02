@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- node
+- '6'
+- '4'
+script: npm run test-ci
+deploy:
+  provider: npm
+  email: christopher.andrejewski@gmail.com
+  api_key:
+    secure: biZyX4Dq0qdAMb+SERU9pZ/laojT7VPrRzEYHx4GL28fKwSDmj4yp/qsyuJabIPJzEkPlCI9RjWUIKCZVYpWf3kLRvH+IKlu2VCd3Mg2G2gOfUK/DNmjjiwG7HJESkxHhBesFe1XYbbphkPTCzhw9z3yq8Iorjk/4j4wrSZw7SNpshb7r3J6N0wT2E4cvgvpWuGMLs/VUMymDQTx2qph8Q6XAg51eK+OiVcFgsN9b6YbYtxP5VP2/+823tfFT3g8XLGRZHnmYLjcG/XpaiLlOHtR31E+VCTMU4fIqGSY7j1H4O1ua3CML0s/ZPClEGQAI5/Mz1SX7RJVnhmpTmfsLd/sPMcYPDsJoxHeny72wnIylIXFm052x/VY70Zn1pre+5uZqLa2HLpOLio6AgYfNK0Uo9jAuBUpATK3Dvm+DfqRv6SIxpFMnmJZtV7ZLFVScTphEt3L4ilPtb+jhfc5g9z/gwSj9yxpF/trqA7SjFkiCLQhiiisiDcHB//MWGeBAAseXYj+bz0GXRSVwViFevfedoYGmdENznlDa0Jy7b8fsyWQih78BczrwcRmt9FslFr5VjSsc/iZ4BIxxMRJqt/okc2OEvhiLq1ZwABenGalP77sZLkzoEzMH4BRN1mSLJ+/9IDLrocWhIUBa41NqbhU6dQXmnb9UYgWnsn05XM=
+  on:
+    tags: true
+    repo: andrejewski/rove
+after_success:
+- npm run coveralls
