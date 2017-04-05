@@ -8,6 +8,12 @@ npm install rove
 
 [![Build Status](https://travis-ci.org/andrejewski/rove.svg?branch=master)](https://travis-ci.org/andrejewski/rove)
 
+##### Standalone scripts
+There are prebuilt bundles located in `docs/dist`:
+
+- `rove.js`: *15KB* Browser production, strips all assertions and minified
+- `rove.dev.js`: *525KB* Browser development, contains wicked assertions to help
+
 #### Example
 
 ```js

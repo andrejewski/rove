@@ -21,8 +21,8 @@ export function recur (func) {
 
 export const route = recur((path, route, options, routeBuilderFn) => {
   const children = buildChildren(routeBuilderFn)
-  assert(!path.startsWith('/'), `Path segment "${path}" should not start with "/"`)
-  assert(!path.endsWith('/'), `Path segment "${path}" should not end with "/"`)
+  assert(path.charAt(0) !== '/', `Path segment "${path}" should not start with "/"`)
+  assert(path.charAt(path.length - 1) !== '/', `Path segment "${path}" should not end with "/"`)
   return {type: 'route', path, route, options, children}
 })
 
@@ -95,7 +95,7 @@ export function findPathRoute (route, path) {
       childPath = path.slice(segment.length)
       break
     case 'route':
-      if (!path.startsWith(route.path)) {
+      if (path.indexOf(route.path) !== 0) {
         return
       }
       segment = path.slice(0, route.path.length)
