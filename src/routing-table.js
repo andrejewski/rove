@@ -143,9 +143,9 @@ export function buildUrlRoute (table, index, url) {
   }
 
   let {route} = result
-  const {deserialize, queryDefaults} = route.options || {}
+  const {deserializeQuery, queryDefaults} = route.options || {}
   const query = decodeQueryParams(getQuery(url))
-  const queryData = deserialize ? deserialize(query) : query
+  const queryData = deserializeQuery ? deserializeQuery(query) : query
   const queryParams = Object.assign({}, queryDefaults, queryData)
 
   let splat = ''
@@ -214,8 +214,8 @@ export function buildRouteUrl (routePath, {route: routeName, splat, routeParams,
     }
   }
 
-  const {serialize, queryDefaults} = route.options || {}
-  const fixedQuery = serialize ? serialize(queryParams || {}) : queryParams
+  const {serializeQuery, queryDefaults} = route.options || {}
+  const fixedQuery = serializeQuery ? serializeQuery(queryParams || {}) : queryParams
   const shortQuery = diffFrom(fixedQuery, queryDefaults)
   const query = encodeQueryParams(shortQuery)
   return path + query

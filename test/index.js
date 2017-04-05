@@ -28,7 +28,7 @@ test('Router should namespace within a given basePath', t => {
 })
 
 test('Router should accept route options', t => {
-  const router = new Router('index', {serialize: () => ({foo: 'bar'})})
+  const router = new Router('index', {serializeQuery: () => ({foo: 'bar'})})
   t.is(router.getRouteUrl({route: 'index'}), '/?foo=bar')
   t.deepEqual(router.getUrlRoute('/?foo=bar'), droute({
     route: 'index',

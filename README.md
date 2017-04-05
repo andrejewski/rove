@@ -150,7 +150,7 @@ These can be anywhere in the app URL wise but we can always use them by name.
     - `isCurrentRouteWithin(route: NavigationEntry): boolean`
 
 #### Router
-The Route class is the only Rove export. The overloaded constructor only requires `indexRouteName`. 
+The Route class is the Rove export. The overloaded constructor requires `indexRouteName`.
 
 - `router = new Router(basePath: string, indexRouteName: string, options: RouteOptions, routeBuilderFn)`
 - `router = new Router(basePath: string, indexRouteName: string, routeBuilderFn)`

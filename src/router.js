@@ -150,13 +150,7 @@ export default class Router {
 
   initialize () {
     this._clientMethod('initialize')
-    const route = this.getCurrentRoute()
-    if (route) {
-      const path = this.getRouteUrl(route)
-      this._navigateTo(path, null, true)
-    } else {
-      this._emitNavigation(route)
-    }
+    this._emitNavigation(this.getCurrentRoute())
   }
 
   destroy () {

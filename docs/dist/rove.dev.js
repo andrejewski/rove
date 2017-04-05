@@ -15182,13 +15182,7 @@ var Router = function () {
     key: 'initialize',
     value: function initialize() {
       this._clientMethod('initialize');
-      var route = this.getCurrentRoute();
-      if (route) {
-        var path = this.getRouteUrl(route);
-        this._navigateTo(path, null, true);
-      } else {
-        this._emitNavigation(route);
-      }
+      this._emitNavigation(this.getCurrentRoute());
     }
   }, {
     key: 'destroy',
@@ -15492,11 +15486,11 @@ function buildUrlRoute(table, index, url) {
   var route = result.route;
 
   var _ref = route.options || {},
-      deserialize = _ref.deserialize,
+      deserializeQuery = _ref.deserializeQuery,
       queryDefaults = _ref.queryDefaults;
 
   var query = (0, _util.decodeQueryParams)((0, _util.getQuery)(url));
-  var queryData = deserialize ? deserialize(query) : query;
+  var queryData = deserializeQuery ? deserializeQuery(query) : query;
   var queryParams = Object.assign({}, queryDefaults, queryData);
 
   var splat = '';
@@ -15595,10 +15589,10 @@ function buildRouteUrl(routePath, _ref3) {
   }
 
   var _ref4 = route.options || {},
-      serialize = _ref4.serialize,
+      serializeQuery = _ref4.serializeQuery,
       queryDefaults = _ref4.queryDefaults;
 
-  var fixedQuery = serialize ? serialize(queryParams || {}) : queryParams;
+  var fixedQuery = serializeQuery ? serializeQuery(queryParams || {}) : queryParams;
   var shortQuery = (0, _util.diffFrom)(fixedQuery, queryDefaults);
   var query = (0, _util.encodeQueryParams)(shortQuery);
   return path + query;
