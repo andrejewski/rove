@@ -6,6 +6,8 @@
 npm install rove
 ```
 
+[![Build Status](https://travis-ci.org/andrejewski/rove.svg?branch=master)](https://travis-ci.org/andrejewski/rove)
+
 #### Example
 
 ```js
@@ -31,7 +33,7 @@ function clientSideUsageExample () {
   router.initialize()
   // ^ fires `onNavigation` with the current location's route
 
-  router.interceptLinkClicks()
+  router.interceptLinkClicks(true)
   // ^ binds to the document, waiting for links within the domain
 
   router.navigateTo({
@@ -61,7 +63,7 @@ function serverSideUsageExample () {
   return NotFoundController()
 }
 
-if (window) {
+if (typeof window === 'object') {
   clientSideUsageExample()
 } else {
   serverSideUsageExample()
@@ -154,7 +156,6 @@ Route building is the most complex part of Rove. It helps to consider `route()` 
 | -------- | ---- | ------- | ----------- |
 | `serialize` | function | *identity* | Change `splat`, `routeParams`, and `queryParams` before they encode into the URL.
 | `deserialize` | function | *identity* | Change `splat`, `routeParams`, and `queryParams` after they decode from the URL.
-| `routeDefaults` | object | `{}` | Defaults which merge into `routeParams` for the route
 | `queryDefaults` | object | `{}` | Defaults which merge into `queryParams` for the route. **Note:** Default values in the final `queryParam` object are not reflected in the URL. This reduces URL clutter for routes with lots of options.
 
 ##### Params
@@ -183,7 +184,7 @@ Returns whether `routeX` is within `routeY`. A route X is within route Y when:
 
 1. Y has no query parameters and Y's path is a base path of X. For example,
    `/a/b` is within `/a`, but not within `/a?yes=no`.
-2. Y and X have the same path and X has query parameters which are a proper subset of the query parameters Y has. For example, `/a?i=1` is within `/a` but not within `/a?i=1` or `/a?i=1&j=2`.
+2. Y and X have the same path and Y has query parameters which are a proper subset of the query parameters X has. For example, `/a?i=1` is within `/a` but not within `/a?i=1` or `/a?i=1&j=2`.
 
 This is useful for top-level links, such as `example.com/docs`. You would like to know that the current route exists within `/docs` to highlight the top link a certain way. Using `route.isRouteWithin()` allows us not to keep track of every possible child route of the `/docs` route or have to manually slice on the current URL.
 
@@ -216,7 +217,7 @@ This method will set a flag with the `message` on the current route. When naviga
 #### `router.initialize()`
 This method reads the current location and fires `onNavigation` events to all listeners with the initial route. This should fire on client-side startup. This throws an error when called on the server.
 
-#### `router.interceptLinkClicks()`
+#### `router.interceptLinkClicks(attach: boolean)`
 This method attaches an event listener to the top-level `window.document`, which
 will trigger `onNavigation` events when the destination URL with within the router's `basePath`. This throws an error when called on the server.
 
