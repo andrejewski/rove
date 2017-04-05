@@ -92,8 +92,8 @@ More specifically, Rove has the following features:
 - Some nice DOM listeners for navigating on `<a>` link clicks
 - Good debugging and errors for bad routing
 - Nested routes and routers
-- De/serialization for route and query parameters
-- Defaults for route and query parameters
+- De/serialization for query parameters
+- Defaults for query parameters
 - Server side functions
 
 ### Design benefits
@@ -110,14 +110,11 @@ No need to manually build URLs.
 Having names instead of paths, we can do `switch(route)`'ing in our views. The current route also belongs in application state, not tied to the router.
 
 4. **Better writing/debugging.**
-Based on the routing, the developer receives errors for:
+Since the routing table builds from nested arrays, the way we check for a matching route and priorities are much more intuitive. Based on the routing, the developer receives errors for:
   - Registering a route name more than once (conflict)
   - Navigating to a route name that is not registered
   - Not providing all necessary route parameters for a given route
   - And more!
-
-  Since the routing table builds from nested arrays, the way we check
-  for a matching route and priorities are much more intuitive.
 
 5. **Routing is more compose-able.**
 Routes can assemble agnostic to where they mount.
@@ -134,44 +131,60 @@ These can be anywhere in the app URL wise but we can always use them by name.
 
 ## Documentation
 
-- [`router = new Router([basePath: string = "/"], indexRouteName: string, routeBuilderFn)`]()
+- Router
   - Universal methods
-    - [`getRouteUrl(route: NavigationEntry): string`]()
-    - [`getUrlRoute(url: string): NavigationEntry`]()
-    - [`isRouteEqual(routeX: NavigationEntry, routeY: NavigationEntry): boolean`]()
-    - [`isRouteWithin(routeX: NavigationEntry, routeY: NavigationEntry): boolean`]()
+    - `getRouteUrl(route: NavigationEntry): string`
+    - `getUrlRoute(url: string): NavigationEntry`
+    - `isRouteEqual(routeX: NavigationEntry, routeY: NavigationEntry): boolean`
+    - `isRouteWithin(routeX: NavigationEntry, routeY: NavigationEntry): boolean`
   - Client-side methods (i.e. history state aware)
-    - [`onNavigation(listener: function)`]()
-    - [`navigateTo(route: NavigationOptions)`]()
-    - [`warnOnNavigation(message: string)`]()
-    - [`initialize()`]()
-    - [`interceptLinkClicks()`]()
-    - [`onClick(event: MouseEvent)`]()
-    - [`getCurrentRoute(): NavigationEntry`]()
-    - [`isRouteActive(route: NavigationEntry): boolean`]()
-    - [`isCurrentRouteWithin(route: NavigationEntry): boolean`]()
+    - `onNavigation(listener: function)`
+    - `offNavigation(listener: function)`
+    - `navigateTo(route: NavigationOptions)`
+    - `warnOnNavigation(message: string)`
+    - `initialize()`
+    - `interceptLinkClicks(attach: boolean)`
+    - `onClick(event: MouseEvent)`
+    - `getCurrentRoute(): NavigationEntry`
+    - `isRouteActive(route: NavigationEntry): boolean`
+    - `isCurrentRouteWithin(route: NavigationEntry): boolean`
 
-#### `router = new Router([basePath: string = "/"], indexRouteName: string, routeBuilderFn)`
-This method builds the routing table of the router. The `basePath` determines where to start caring about route matching. The `indexRouteName` is the top-level route (i.e. `basePath`). The `routeBuilderFn` must be a function which accepts the `r(path: string, routeName: string, [options: RouteOptions], routeBuilderFn)` function and returns an array containing the results of calls to `r()` or child `Router` instances.
+#### Router
+The Route class is the only Rove export. The overloaded constructor only requires `indexRouteName`. 
 
-Route building is the most complex part of Rove. It helps to consider `route()` to be the same as calling `r` like `r('/', 'index', r => [])`.
+- `router = new Router(basePath: string, indexRouteName: string, options: RouteOptions, routeBuilderFn)`
+- `router = new Router(basePath: string, indexRouteName: string, routeBuilderFn)`
+- `router = new Router(basePath: string, indexRouteName: string, options: RouteOptions)`
+- `router = new Router(basePath: string, indexRouteName: string)`
+- `router = new Router(indexRouteName: string, options: RouteOptions, routeBuilderFn)`
+- `router = new Router(indexRouteName: string, routeBuilderFn)`
+- `router = new Router(indexRouteName: string, options: RouteOptions)`
+- `router = new Router(indexRouteName: string)`
+
+This builds the routing table of the router. The `basePath` (defaults to `""`) determines where to start caring about route matching. The `indexRouteName` names the top-level route (i.e. `basePath`). The `routeBuilderFn` must be a function which accepts the `r(path: string, routeName: string [, options: RouteOptions][, routeBuilderFn])` function and returns an array containing the results of calls to `r()` or child `Router` instances.
 
 `RouteOptions` is a map of the following options:
 
 | Option | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
-| `serialize` | function | *identity* | Change `splat`, `routeParams`, and `queryParams` before they encode into the URL.
-| `deserialize` | function | *identity* | Change `splat`, `routeParams`, and `queryParams` after they decode from the URL.
+| `serializeQuery` | function | *identity* | Change `queryParams` before they encode into the URL.
+| `deserializeQuery` | function | *identity* | Change `queryParams` after they decode from the URL.
 | `queryDefaults` | object | `{}` | Defaults which merge into `queryParams` for the route. **Note:** Default values in the final `queryParam` object are not reflected in the URL. This reduces URL clutter for routes with lots of options.
 
 ##### Params
-The `r` function has a function property `r.param(paramName: string, routeName: string, [options: RouteOptions], routeBuilderFn)`. The `paramName` is the route parameter key that must have a value to navigate to `routeName` or its child routes.
+`r.param(paramName: string, routeName: string [, options: RouteOptions][, routeBuilderFn])`
+
+The `paramName` is the route parameter key that must have a value to navigate to `routeName` or its child routes.
 
 ##### Splats
-The `r` function has a function property `r.splat(routeName: string, [options: RouteOptions])`. Splats will match anything and that variable segment aligns with the `NavigationEntry` via the `splat: string` property. Splats cannot have children.
+`r.splat(routeName: string, [options: RouteOptions])`
+
+Splats will match anything and that variable segment is the `NavigationEntry` `splat: string` property. Splats cannot have children. Note: Splats are catch-all so order them last in the routing table.
 
 ##### Redirects
-The `r` function has a function property `r.redirect(path: string, route: NavigationEntry)`. When sent to that `path`, the router will follow the given `route` to a route that cannot redirect. Redirect loops are not possible because redirects are not named. An error throws if a redirect points to a route that was not defined in the routing table.
+`r.redirect(path: string, route: NavigationEntry)`
+
+When sent to that `path`, the router will follow the given `route` to a route that cannot redirect. Redirect loops are not possible because redirects are not named. An error throws if a redirect points to a route that was not defined in the routing table.
 
 ### Universal methods
 Both client-side and server-side support these methods.
@@ -205,7 +218,7 @@ This method subscribes the `listener` to all new navigation route changes. The l
 | Property | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
 | `route` | string | **required** | Name for the route
-| `splat` | string | *none* | Splat string for the route
+| `splat` | string | `""` | Splat string for the route
 | `routeParams` | object | `{}` | Route parameters for the route
 | `queryParams` | object | `{}` | Query parameters for the route
 | `redirect` | boolean | `false` | Whether the route was the result of a redirect
@@ -232,7 +245,7 @@ will trigger `onNavigation` events when the destination URL with within the rout
 #### `router.onClick(event: MouseEvent)`
 This is a convenience function that attaches directly to links via `onclick=` or `addEventListener()`. It does the same as `router.interceptLinkClicks()` for single elements.
 
-**Aside:** Without using the above click handlers, you could run into trouble with `event.target`. Rove handlers recurse up from the original target looking for the immediate `<a>` parent. This consideration is important for `<a>` nodes which containing other potential click targets. You can build your own handlers, but be aware of that edge case.
+**Aside:** Without using the above click handlers, you could run into trouble with `event.target`. Rove event handlers recurse up from the original target looking for the immediate `<a>` parent. This consideration is important for `<a>` nodes which containing other potential click targets. Rove event handlers also respect `target="_blank"`, which opens a new window/tab. You can build your own handlers, but be aware of these edge cases.
 
 #### `route.navigateTo(route: NavigationOptions)`
 This method will trigger an `onNavigation` event with the new route. This method will throw an error if `route.route` is not a route in the routing table, which is for developer sanity but also enforcing static route names.
