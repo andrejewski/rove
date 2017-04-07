@@ -179,7 +179,7 @@ The `paramName` is the route parameter key that must have a value to navigate to
 ##### Splats
 `r.splat(routeName: string, [options: RouteOptions])`
 
-Splats will match anything and that variable segment is the `NavigationEntry` `splat: string` property. Splats cannot have children. Note: Splats are catch-all so order them last in the routing table.
+Splats will match anything and the remaining variable-length segment is the `NavigationEntry` `splat: string` property. Splats cannot have children. Note: Splats are catch-all so order them last in the routing table.
 
 ##### Redirects
 `r.redirect(path: string, route: NavigationEntry)`
@@ -193,7 +193,7 @@ Both client-side and server-side support these methods.
 This method returns the `route` URL, or `null` if there is no matching route.
 
 #### `router.getUrlRoute(url: string): NavigationEntry`
-This method returns the URL's route, or `null` if there is no matching route.
+This method returns the `url` route, or `null` if there is no matching route.
 
 #### `router.isRouteEqual(routeX: NavigationEntry, routeY: NavigationEntry): boolean`
 This method returns whether to routes are equal. A route X is equal to route Y when their `route` is equal, `splat` is equal, and their **serialized** `routeParams` and `queryParams` are equal.
@@ -229,23 +229,23 @@ a URL without a matching route.
 **Note:** To remove the subscription, call `router.offNavigation()` with the same listener function.
 
 #### `router.warnOnNavigation(message: string)`
-This method will set a flag with the `message` on the current route. When navigating away from current route, the user must confirm they want to leave the current "page" before the navigation occurs. The next route will not warn, unless you call `warnOnNavigation` for that route. You can call this method repeated without side-effects if the message needs changed over time for the same route. An empty string `""` will show the default browser message, which is best if you are not localizing your message. To cancel a set warning, call `warnOnNavigation(false)`.
+This method will set a flag with the `message` on the current route. When navigating away from current route, the user must confirm they want to leave the current "page" before the navigation occurs. The next route will not warn, unless you call `warnOnNavigation` for that route. You can call this method repeated without side-effects if the message needs changed over time for the same route. Calling `warnOnNavigation(true)` will show the default browser message, which is best if you are not localizing your message. To cancel a set warning, call `warnOnNavigation(false)`.
 
 **Aside:** This is good for when someone is editing a form and tries to leave before they submit it. From a UI/UX standpoint use it sparingly. You should be saving draft versions of critical form data because the user will not get a prompt if the program or computer dies or breaks. Users hate popup dialogues so if you use them too much or incorrectly they will block your pages from using popups at all. Any resulting poor experiences are on you.
 
 #### `router.initialize()`
-This method reads the current location and fires `onNavigation` events to all listeners with the initial route. This should fire on client-side startup. This throws an error when called on the server.
+This method reads the current location and fires `onNavigation` events to all listeners with the initial route. This should fire on client-side startup.
 
 #### `router.interceptLinkClicks(attach: boolean)`
-This method attaches an event listener to the top-level `window.document`, which
-will trigger `onNavigation` events when the destination URL with within the router's `basePath`. This throws an error when called on the server.
+Calling `interceptLinkClicks(true)` attaches an event listener to the top-level `window.document`, which
+will trigger `onNavigation` events when the destination URL with within the router's `basePath`. 
 
 **Note:** To remove the listener, call `router.interceptLinkClicks(false)`.
 
 #### `router.onClick(event: MouseEvent)`
 This is a convenience function that attaches directly to links via `onclick=` or `addEventListener()`. It does the same as `router.interceptLinkClicks()` for single elements.
 
-**Aside:** Without using the above click handlers, you could run into trouble with `event.target`. Rove event handlers recurse up from the original target looking for the immediate `<a>` parent. This consideration is important for `<a>` nodes which containing other potential click targets. Rove event handlers also respect `target="_blank"`, which opens a new window/tab. You can build your own handlers, but be aware of these edge cases.
+**Aside:** Without using the above click handlers, you could run into trouble with `event.target`. Rove event handlers recurse up from the original target looking for the immediate `<a>` parent. This consideration is important for `<a>` nodes which contain other potential click targets. Rove event handlers also respect `target="_blank"`, which opens a new window/tab. You can build your own handlers, but be aware of these edge cases.
 
 #### `route.navigateTo(route: NavigationOptions)`
 This method will trigger an `onNavigation` event with the new route. This method will throw an error if `route.route` is not a route in the routing table, which is for developer sanity but also enforcing static route names.
