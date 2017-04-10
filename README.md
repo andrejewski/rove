@@ -1,14 +1,14 @@
 # Rove
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/andrejewski/rove.svg)](https://greenkeeper.io/)
-
 > rove /rōv/: *verb* travel constantly without a fixed destination; wander.
 
 ```sh
 npm install rove
 ```
 
+[![npm](https://img.shields.io/npm/v/rove.svg)](https://www.npmjs.com/package/rove)
 [![Build Status](https://travis-ci.org/andrejewski/rove.svg?branch=master)](https://travis-ci.org/andrejewski/rove)
+[![Greenkeeper badge](https://badges.greenkeeper.io/andrejewski/rove.svg)](https://greenkeeper.io/)
 
 ##### Standalone scripts
 There are prebuilt bundles located in `docs/dist`:
@@ -240,7 +240,7 @@ This method reads the current location and fires `onNavigation` events to all li
 
 #### `router.interceptLinkClicks(attach: boolean)`
 Calling `interceptLinkClicks(true)` attaches an event listener to the top-level `window.document`, which
-will trigger `onNavigation` events when the destination URL with within the router's `basePath`. 
+will trigger `onNavigation` events when the destination URL with within the router's `basePath`.
 
 **Note:** To remove the listener, call `router.interceptLinkClicks(false)`.
 
