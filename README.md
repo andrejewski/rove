@@ -1,5 +1,7 @@
 # Rove
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/andrejewski/rove.svg)](https://greenkeeper.io/)
+
 > rove /rōv/: *verb* travel constantly without a fixed destination; wander.
 
 ```sh
