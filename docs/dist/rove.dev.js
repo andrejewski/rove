@@ -15116,6 +15116,8 @@ var Router = function () {
   }, {
     key: 'onNavigation',
     value: function onNavigation(listener) {
+      var _this2 = this;
+
       var _rec4 = new _powerAssertRecorder();
 
       this._clientMethod('onNavigation');
@@ -15124,40 +15126,31 @@ var Router = function () {
         filepath: 'src/router.js',
         line: 116
       }), 'listener must be a function');
-      this._navigationListeners.push(listener);
-    }
-  }, {
-    key: 'offNavigation',
-    value: function offNavigation(listener) {
-      var _rec5 = new _powerAssertRecorder();
 
-      this._clientMethod('offNavigation');
-      (0, _powerAssert2.default)(_rec5._expr(_rec5._capt(_rec5._capt(typeof listener === 'undefined' ? 'undefined' : _typeof(listener), 'arguments/0/left') === 'function', 'arguments/0'), {
-        content: 'assert(typeof listener === \'function\', \'listener must be a function\')',
-        filepath: 'src/router.js',
-        line: 122
-      }), 'listener must be a function');
-      this._navigationListeners = this._navigationListeners.filter(function (x) {
-        return x !== listener;
-      });
+      this._navigationListeners.push(listener);
+      return function () {
+        _this2._navigationListeners = _this2._navigationListeners.filter(function (x) {
+          return x !== listener;
+        });
+      };
     }
   }, {
     key: 'navigateTo',
     value: function navigateTo(route) {
-      var _rec6 = new _powerAssertRecorder(),
-          _rec7 = new _powerAssertRecorder();
+      var _rec5 = new _powerAssertRecorder(),
+          _rec6 = new _powerAssertRecorder();
 
       this._clientMethod('navigateTo');
-      (0, _powerAssert2.default)(_rec6._expr(_rec6._capt(_rec6._capt(_typeof(_rec6._capt(_rec6._capt(route, 'arguments/0/left/argument/object').route, 'arguments/0/left/argument')), 'arguments/0/left') === 'string', 'arguments/0'), {
+      (0, _powerAssert2.default)(_rec5._expr(_rec5._capt(_rec5._capt(_typeof(_rec5._capt(_rec5._capt(route, 'arguments/0/left/argument/object').route, 'arguments/0/left/argument')), 'arguments/0/left') === 'string', 'arguments/0'), {
         content: 'assert(typeof route.route === \'string\', \'route must be a string\')',
         filepath: 'src/router.js',
-        line: 129
+        line: 127
       }), 'route must be a string');
       var path = this.getRouteUrl(route);
-      (0, _powerAssert2.default)(_rec7._expr(_rec7._capt(path, 'arguments/0'), {
+      (0, _powerAssert2.default)(_rec6._expr(_rec6._capt(path, 'arguments/0'), {
         content: 'assert(path, `route not found for ${JSON.stringify(route)}`)',
         filepath: 'src/router.js',
-        line: 131
+        line: 129
       }), 'route not found for ' + JSON.stringify(route));
       this._navigateTo(path, null, route.replace);
     }

@@ -114,14 +114,12 @@ export default class Router {
   onNavigation (listener) {
     this._clientMethod('onNavigation')
     assert(typeof listener === 'function', 'listener must be a function')
-    this._navigationListeners.push(listener)
-  }
 
-  offNavigation (listener) {
-    this._clientMethod('offNavigation')
-    assert(typeof listener === 'function', 'listener must be a function')
-    this._navigationListeners = this._navigationListeners
-      .filter(x => x !== listener)
+    this._navigationListeners.push(listener)
+    return () => {
+      this._navigationListeners = this._navigationListeners
+        .filter(x => x !== listener)
+    }
   }
 
   navigateTo (route) {

@@ -140,8 +140,7 @@ These can be anywhere in the app URL wise but we can always use them by name.
     - `isRouteEqual(routeX: NavigationEntry, routeY: NavigationEntry): boolean`
     - `isRouteWithin(routeX: NavigationEntry, routeY: NavigationEntry): boolean`
   - Client-side methods (i.e. history state aware)
-    - `onNavigation(listener: function)`
-    - `offNavigation(listener: function)`
+    - `onNavigation(listener: function): function`
     - `navigateTo(route: NavigationOptions)`
     - `warnOnNavigation(message: string)`
     - `initialize()`
@@ -212,7 +211,7 @@ This is useful for top-level links, such as `example.com/docs`. You would like t
 ### Client-side methods
 The following methods are for client-side applications and will throw an error if used on the server-side.
 
-#### `router.onNavigation(listener: function)`
+#### `router.onNavigation(listener: function): function`
 This method subscribes the `listener` to all new navigation route changes. The listener will receive the `route` containing a `NavigationEntry`.
 
 `NavigationEntry` is a map of the following properties:
@@ -228,7 +227,7 @@ This method subscribes the `listener` to all new navigation route changes. The l
 **Note:** When the listener receives `null` this indicates navigation to
 a URL without a matching route.
 
-**Note:** To remove the subscription, call `router.offNavigation()` with the same listener function.
+**Note:** To remove the subscription, call the returned function.
 
 #### `router.warnOnNavigation(message: string)`
 This method will set a flag with the `message` on the current route. When navigating away from current route, the user must confirm they want to leave the current "page" before the navigation occurs. The next route will not warn, unless you call `warnOnNavigation` for that route. You can call this method repeated without side-effects if the message needs changed over time for the same route. Calling `warnOnNavigation(true)` will show the default browser message, which is best if you are not localizing your message. To cancel a set warning, call `warnOnNavigation(false)`.
