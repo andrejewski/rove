@@ -28,7 +28,7 @@
     "url": "https://github.com/andrejewski/rove/issues"
   },
   "dependencies": {
-    "power-assert": "^1.4.2"
+    "power-assert": "^1.4.4"
   },
   "devDependencies": {
     "ava": "^0.19.1",
