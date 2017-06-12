@@ -42,7 +42,7 @@
     "babel-register": "^6.11.6",
     "babelify": "^7.3.0",
     "browserify": "^14.3.0",
-    "del": "^2.2.1",
+    "del": "^3.0.0",
     "fixpack": "^2.3.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
