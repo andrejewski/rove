@@ -31,7 +31,7 @@
     "power-assert": "^1.4.2"
   },
   "devDependencies": {
-    "ava": "^0.19.1",
+    "ava": "^0.20.0",
     "babel-plugin-istanbul": "^4.1.1",
     "babel-plugin-unassert": "^2.1.2",
     "babel-polyfill": "^6.13.0",
