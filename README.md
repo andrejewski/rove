@@ -248,7 +248,7 @@ This is a convenience function that attaches directly to links via `onclick=` or
 
 **Aside:** Without using the above click handlers, you could run into trouble with `event.target`. Rove event handlers recurse up from the original target looking for the immediate `<a>` parent. This consideration is important for `<a>` nodes which contain other potential click targets. Rove event handlers also respect `target="_blank"`, which opens a new window/tab. You can build your own handlers, but be aware of these edge cases.
 
-#### `route.navigateTo(route: NavigationOptions)`
+#### `router.navigateTo(route: NavigationOptions)`
 This method will trigger an `onNavigation` event with the new route. This method will throw an error if `route.route` is not a route in the routing table, which is for developer sanity but also enforcing static route names.
 
 `NavigationOptions` is a map of the following options:
