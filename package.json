@@ -41,7 +41,7 @@
     "babel-regenerator-runtime": "^6.5.0",
     "babel-register": "^6.11.6",
     "babelify": "^8.0.0",
-    "browserify": "^16.0.0",
+    "browserify": "^16.4.0",
     "del": "^3.0.0",
     "fixpack": "^2.3.1",
     "gulp": "^3.9.1",
